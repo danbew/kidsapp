@@ -1,4 +1,11 @@
-import { Image, Pressable, StyleSheet, Text, View, Animated } from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  Animated,
+} from 'react-native';
 import { useEffect, useRef } from 'react';
 
 type Props = {
@@ -19,19 +26,15 @@ const SelectButton = ({ title = 'Все темы', onPress }: Props) => {
 
   return (
     <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-      <Pressable 
-        onPress={onPress} 
-        style={styles.button}
-        hitSlop={10}
-      >
-      <Text style={styles.text}>{title}</Text>
-      <View style={styles.iconContainer}>
-        <Image
-          source={require('../../assets/icons/down-poiner.png')}
-          style={styles.icon}
-        />
-      </View>
-    </Pressable>
+      <Pressable onPress={onPress} style={styles.button} hitSlop={10}>
+        <Text style={styles.text}>{title}</Text>
+        <View style={styles.iconContainer}>
+          <Image
+            source={require('../../assets/icons/down-poiner.png')}
+            style={styles.icon}
+          />
+        </View>
+      </Pressable>
     </Animated.View>
   );
 };
@@ -50,8 +53,6 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontFamily: 'Nunito-ExtraBold',
-    fontWeight: '800',
-    fontSize: 12,
   },
   iconContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)',

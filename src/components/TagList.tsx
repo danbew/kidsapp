@@ -54,7 +54,7 @@ const TagList = ({ tags, selectedTag }: TagListProps) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
         ListHeaderComponent={
-          <Text style={styles.itemText}>{'Выбор темы'}</Text>
+          <Text style={styles.listHeaderText}>{'Выбор темы'}</Text>
         }
       />
       <Pressable
@@ -82,6 +82,8 @@ const getStyles = (paddings: EdgeInsets) =>
       justifyContent: 'center',
       alignItems: 'center',
       gap: 6,
+      marginTop: 12,
+      paddingBottom: paddings.bottom + 60,
     },
     item: {
       paddingVertical: 9,
@@ -93,7 +95,11 @@ const getStyles = (paddings: EdgeInsets) =>
     },
     itemText: {
       fontSize: 18,
-      fontWeight: '800',
+      fontFamily: 'Nunito-ExtraBold',
+    },
+    listHeaderText: {
+      marginBottom: 12,
+      fontSize: 18,
       fontFamily: 'Nunito-ExtraBold',
     },
     selectedItem: {
@@ -107,7 +113,7 @@ const getStyles = (paddings: EdgeInsets) =>
     iconContainer: {
       position: 'absolute',
       top: paddings.top + 32,
-      right: paddings.right + 12,
+      right: paddings.right + 24,
     },
     firstItem: {
       borderWidth: 0,

@@ -159,7 +159,7 @@ const gesStyles = (paddings: EdgeInsets) =>
       shadowOffset: { width: 0, height: 6 },
       shadowOpacity: 1,
       shadowRadius: 0,
-      elevation: 15,
+      elevation: 6,
     },
 
     itemImage: {
@@ -176,9 +176,7 @@ const gesStyles = (paddings: EdgeInsets) =>
       borderTopRightRadius: 24,
     },
     text: {
-      fontWeight: '800',
       fontFamily: 'Nunito-ExtraBold',
-      fontSize: 14,
       textAlign: 'center',
       paddingHorizontal: 8,
       paddingBottom: 8,
