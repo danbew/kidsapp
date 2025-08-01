@@ -24,24 +24,25 @@ const TagList = ({ tags, selectedTag }: TagListProps) => {
   const allTags = ['Все темы', ...tags];
   const paddings = usePaddings();
   const styles = getStyles(paddings);
-  const renderItem: ListRenderItem<string> = ({ item, index }) => (
-    <Pressable
-      style={[
-        styles.item,
-        ((!selectedTag && index === 0) || selectedTag === item) &&
-          styles.selectedItem,
-      ]}
-      onPress={() => {
-        if (index === 0) {
-          navigation.navigate('Home', {});
-        } else {
-          navigation.navigate('Home', { selectedTag: item });
-        }
-      }}
-    >
-      <Text style={styles.itemText}>{item}</Text>
-    </Pressable>
-  );
+  const renderItem: ListRenderItem<string> = ({ item, index }) => {
+    const isSelected = (!selectedTag && index === 0) || selectedTag === item;
+    return (
+      <Pressable
+        style={[styles.item, isSelected && styles.selectedItem]}
+        onPress={() => {
+          if (index === 0) {
+            navigation.navigate('Home', {});
+          } else {
+            navigation.navigate('Home', { selectedTag: item });
+          }
+        }}
+      >
+        <Text style={[styles.itemText, isSelected && styles.selectedText]}>
+          {item}
+        </Text>
+      </Pressable>
+    );
+  };
 
   return (
     <>
@@ -52,6 +53,9 @@ const TagList = ({ tags, selectedTag }: TagListProps) => {
         style={styles.container}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
+        ListHeaderComponent={
+          <Text style={styles.itemText}>{'Выбор темы'}</Text>
+        }
       />
       <Pressable
         hitSlop={10}
@@ -102,13 +106,16 @@ const getStyles = (paddings: EdgeInsets) =>
     },
     iconContainer: {
       position: 'absolute',
-      top: paddings.top + 38,
+      top: paddings.top + 32,
       right: paddings.right + 12,
     },
     firstItem: {
       borderWidth: 0,
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    selectedText: {
+      color: '#fff',
     },
   });
 
