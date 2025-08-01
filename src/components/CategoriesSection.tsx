@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useRef } from 'react';
 import {
   FlatList,
   View,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ListRenderItem,
   Image,
+  Animated,
 } from 'react-native';
 import { useCourses, Course } from '../hooks/api/useCourses';
 import { usePaddings } from '../hooks/usePaddings';
@@ -14,6 +15,53 @@ import { useNavigation } from '@react-navigation/native';
 import { ScreensParamList } from '../navigation/MainNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import SelectButton from './SelectButton';
+
+const AnimatedItem = ({
+  item,
+  index,
+  styles,
+}: {
+  item: Course;
+  index: number;
+  styles: any;
+}) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(50)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 250,
+        delay: index * 150,
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateY, {
+        toValue: 0,
+        duration: 250,
+        delay: index * 150,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [fadeAnim, translateY, index]);
+
+  return (
+    <Animated.View
+      style={[
+        styles.item,
+        {
+          opacity: fadeAnim,
+          transform: [{ translateY }],
+        },
+      ]}
+    >
+      <View style={[styles.imageContainer, { backgroundColor: item.bgColor }]}>
+        <Image source={{ uri: item.image }} style={styles.itemImage} />
+      </View>
+      <Text style={styles.text}>{item.name}</Text>
+    </Animated.View>
+  );
+};
 
 const CategoriesSection = ({ selectedTag }: { selectedTag?: string }) => {
   const navigation =
@@ -28,13 +76,9 @@ const CategoriesSection = ({ selectedTag }: { selectedTag?: string }) => {
 
   const paddings = usePaddings();
   const styles = gesStyles(paddings);
-  const renderItem: ListRenderItem<Course> = ({ item }) => (
-    <View style={styles.item}>
-      <View style={[styles.imageContainer, { backgroundColor: item.bgColor }]}>
-        <Image source={{ uri: item.image }} style={styles.itemImage} />
-      </View>
-      <Text style={styles.text}>{item.name}</Text>
-    </View>
+
+  const renderItem: ListRenderItem<Course> = ({ item, index }) => (
+    <AnimatedItem item={item} index={index!} styles={styles} />
   );
 
   if (isLoading) {

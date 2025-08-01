@@ -1,11 +1,29 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View, Animated } from 'react-native';
+import { useEffect, useRef } from 'react';
+
 type Props = {
   title?: string;
   onPress: () => void;
 };
 const SelectButton = ({ title = 'Все темы', onPress }: Props) => {
+  const scaleAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      tension: 100,
+      friction: 6,
+    }).start();
+  }, [scaleAnim]);
+
   return (
-    <Pressable onPress={onPress} style={styles.button} hitSlop={10}>
+    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+      <Pressable 
+        onPress={onPress} 
+        style={styles.button}
+        hitSlop={10}
+      >
       <Text style={styles.text}>{title}</Text>
       <View style={styles.iconContainer}>
         <Image
@@ -14,6 +32,7 @@ const SelectButton = ({ title = 'Все темы', onPress }: Props) => {
         />
       </View>
     </Pressable>
+    </Animated.View>
   );
 };
 
