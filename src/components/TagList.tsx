@@ -26,7 +26,11 @@ const TagList = ({ tags, selectedTag }: TagListProps) => {
   const styles = getStyles(paddings);
   const renderItem: ListRenderItem<string> = ({ item, index }) => (
     <Pressable
-      style={[styles.item, selectedTag === item && styles.selectedItem]}
+      style={[
+        styles.item,
+        ((!selectedTag && index === 0) || selectedTag === item) &&
+          styles.selectedItem,
+      ]}
       onPress={() => {
         if (index === 0) {
           navigation.navigate('Home', {});
@@ -50,6 +54,7 @@ const TagList = ({ tags, selectedTag }: TagListProps) => {
         contentContainerStyle={styles.contentContainer}
       />
       <Pressable
+        hitSlop={10}
         onPress={() => navigation.goBack()}
         style={styles.iconContainer}
       >
@@ -85,20 +90,25 @@ const getStyles = (paddings: EdgeInsets) =>
     itemText: {
       fontSize: 18,
       fontWeight: '800',
-      fontFamily: 'Nunito',
+      fontFamily: 'Nunito-ExtraBold',
     },
     selectedItem: {
       backgroundColor: '#5CBB73',
       borderColor: '#5CBB73',
     },
     icon: {
-      width: 22,
-      height: 22,
+      width: 14,
+      height: 14,
     },
     iconContainer: {
       position: 'absolute',
-      top: paddings.top + 24,
+      top: paddings.top + 38,
       right: paddings.right + 12,
+    },
+    firstItem: {
+      borderWidth: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
 

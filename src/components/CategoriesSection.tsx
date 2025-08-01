@@ -74,9 +74,9 @@ const CategoriesSection = ({ selectedTag }: { selectedTag?: string }) => {
         windowSize={10}
         initialNumToRender={5}
         getItemLayout={(_, index) => ({
-          length: 210, // actual item width
-          height: 198, // actual item height
-          offset: (210 + 18) * index, // item width + gap
+          length: 210,
+          height: 198,
+          offset: (210 + 18) * index,
           index,
         })}
         showsHorizontalScrollIndicator={false}
@@ -133,7 +133,7 @@ const gesStyles = (paddings: EdgeInsets) =>
     },
     text: {
       fontWeight: '800',
-      fontFamily: 'Nunito',
+      fontFamily: 'Nunito-ExtraBold',
       fontSize: 14,
       textAlign: 'center',
       paddingHorizontal: 8,

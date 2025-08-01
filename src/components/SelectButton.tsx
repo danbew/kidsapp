@@ -5,7 +5,7 @@ type Props = {
 };
 const SelectButton = ({ title = 'Все темы', onPress }: Props) => {
   return (
-    <Pressable onPress={onPress} style={styles.button}>
+    <Pressable onPress={onPress} style={styles.button} hitSlop={10}>
       <Text style={styles.text}>{title}</Text>
       <View style={styles.iconContainer}>
         <Image
@@ -30,9 +30,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontFamily: 'Nunito',
+    fontFamily: 'Nunito-ExtraBold',
     fontWeight: '800',
-    lineHeight: 12,
     fontSize: 12,
   },
   iconContainer: {
@@ -43,6 +42,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  icon: {},
+  icon: {
+    width: 10,
+    height: 6,
+  },
 });
 export default SelectButton;
