@@ -13,8 +13,19 @@ const RootStack = createNativeStackNavigator({
     headerShown: false,
   },
   screens: {
-    Home: HomeScreen,
-    Details: DetailsScreen,
+    Home: {
+      screen: HomeScreen,
+      options: {
+        animation: 'fade',
+        animationDuration: 100,
+      },
+    },
+    Details: {
+      screen: DetailsScreen,
+      options: {
+        gestureDirection: 'vertical',
+      },
+    },
   },
 });
 
