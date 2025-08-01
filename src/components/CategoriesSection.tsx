@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   FlatList,
   View,
@@ -10,9 +10,22 @@ import {
 import { useCourses, Course } from '../hooks/api/useCourses';
 import { usePaddings } from '../hooks/usePaddings';
 import { EdgeInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { ScreensParamList } from '../navigation/MainNavigator';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import SelectButton from './SelectButton';
 
-const CategoriesSection = () => {
+const CategoriesSection = ({ selectedTag }: { selectedTag?: string }) => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<ScreensParamList>>();
   const { data, isLoading, error } = useCourses();
+  const selectedCategories = useMemo(() => {
+    if (!selectedTag) {
+      return data;
+    }
+    return data.filter(course => course.tags.includes(selectedTag));
+  }, [data, selectedTag]);
+
   const paddings = usePaddings();
   const styles = gesStyles(paddings);
   const renderItem: ListRenderItem<Course> = ({ item }) => (
@@ -42,8 +55,17 @@ const CategoriesSection = () => {
 
   return (
     <View style={styles.container}>
+      <SelectButton
+        title={selectedTag}
+        onPress={() =>
+          navigation.navigate('Details', {
+            courses: data,
+            selectedTag,
+          })
+        }
+      />
       <FlatList
-        data={data}
+        data={selectedCategories}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         horizontal
@@ -68,14 +90,17 @@ const gesStyles = (paddings: EdgeInsets) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      width: '100%',
       backgroundColor: '#7446EE',
+      paddingTop: paddings.top + 12,
+      alignItems: 'center',
     },
     listContainer: {
+      alignItems: 'center',
       borderRadius: 24,
       paddingLeft: paddings.left,
       paddingRight: paddings.right,
       paddingVertical: 20,
-      alignItems: 'center',
       gap: 18,
     },
     item: {
