@@ -33,13 +33,13 @@ const AnimatedItem = ({
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 250,
-        delay: index * 150,
+        delay: index * 50,
         useNativeDriver: true,
       }),
       Animated.timing(translateY, {
         toValue: 0,
         duration: 250,
-        delay: index * 150,
+        delay: index * 50,
         useNativeDriver: true,
       }),
     ]).start();
@@ -142,8 +142,8 @@ const gesStyles = (paddings: EdgeInsets) =>
     listContainer: {
       alignItems: 'center',
       borderRadius: 24,
-      paddingLeft: paddings.left,
-      paddingRight: paddings.right,
+      paddingLeft: paddings.left + 12,
+      paddingRight: paddings.right + 12,
       paddingVertical: 20,
       gap: 18,
     },
