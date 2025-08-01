@@ -24,6 +24,7 @@ const RootStack = createNativeStackNavigator({
       screen: DetailsScreen,
       options: {
         gestureDirection: 'vertical',
+        animationDuration: 200,
       },
     },
   },
