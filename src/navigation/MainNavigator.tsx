@@ -5,6 +5,7 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from './HomeScreen';
 import { DetailsScreen } from './DetailsScreen';
+import { Course } from '../hooks/api/useCourses';
 
 const RootStack = createNativeStackNavigator({
   initialRouteName: 'Home',
@@ -24,13 +25,11 @@ declare global {
 }
 export interface ScreensParamList extends ParamListBase {
   Home: {
-    categoryId: number;
+    selectedTag?: string;
   };
   Details: {
-    categories: {
-      title: string;
-      id: number;
-    }[];
+    courses: Course[];
+    selectedTag?: string;
   };
 }
 const Navigation = createStaticNavigation(RootStack);
