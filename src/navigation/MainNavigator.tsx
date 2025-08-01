@@ -1,8 +1,6 @@
-// In App.js in a new project
-
 import {
   createStaticNavigation,
-  StaticParamList,
+  ParamListBase,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from './HomeScreen';
@@ -18,12 +16,22 @@ const RootStack = createNativeStackNavigator({
     Details: DetailsScreen,
   },
 });
-export type RootStackParamList = StaticParamList<typeof RootStack>;
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
+    interface RootParamList extends ScreensParamList {}
   }
+}
+export interface ScreensParamList extends ParamListBase {
+  Home: {
+    categoryId: number;
+  };
+  Details: {
+    categories: {
+      title: string;
+      id: number;
+    }[];
+  };
 }
 const Navigation = createStaticNavigation(RootStack);
 
