@@ -7,6 +7,8 @@ import {
   ListRenderItem,
   Image,
   Animated,
+  Platform,
+  useWindowDimensions,
 } from 'react-native';
 import { useCourses, Course } from '../hooks/api/useCourses';
 import { usePaddings } from '../hooks/usePaddings';
@@ -15,6 +17,10 @@ import { useNavigation } from '@react-navigation/native';
 import { ScreensParamList } from '../navigation/MainNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import SelectButton from './SelectButton';
+
+const ITEM_WIDTH = 210;
+const ITEM_HEIGHT = 198;
+const GAP_SIZE = 18;
 
 const AnimatedItem = ({
   item,
@@ -67,6 +73,7 @@ const CategoriesSection = ({ selectedTag }: { selectedTag?: string }) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<ScreensParamList>>();
   const { data, isLoading, error } = useCourses();
+  const { width } = useWindowDimensions();
   const selectedCategories = useMemo(() => {
     if (!selectedTag) {
       return data;
@@ -80,7 +87,10 @@ const CategoriesSection = ({ selectedTag }: { selectedTag?: string }) => {
   const renderItem: ListRenderItem<Course> = ({ item, index }) => (
     <AnimatedItem item={item} index={index!} styles={styles} />
   );
-
+  const shouldBounce = useMemo(
+    () => width < (ITEM_WIDTH + GAP_SIZE) * selectedCategories.length,
+    [selectedCategories.length, width],
+  );
   if (isLoading) {
     return (
       <View style={styles.container}>
@@ -109,6 +119,7 @@ const CategoriesSection = ({ selectedTag }: { selectedTag?: string }) => {
         }
       />
       <FlatList
+        bounces={shouldBounce}
         data={selectedCategories}
         renderItem={renderItem}
         keyExtractor={item => item.id}
@@ -118,9 +129,9 @@ const CategoriesSection = ({ selectedTag }: { selectedTag?: string }) => {
         windowSize={10}
         initialNumToRender={5}
         getItemLayout={(_, index) => ({
-          length: 210,
-          height: 198,
-          offset: (210 + 18) * index,
+          length: ITEM_WIDTH,
+          height: ITEM_HEIGHT,
+          offset: (ITEM_WIDTH + GAP_SIZE) * index,
           index,
         })}
         showsHorizontalScrollIndicator={false}
@@ -138,30 +149,28 @@ const gesStyles = (paddings: EdgeInsets) =>
       backgroundColor: '#7446EE',
       paddingTop: paddings.top + 12,
       alignItems: 'center',
+      paddingBottom: paddings.bottom,
     },
     listContainer: {
       alignItems: 'center',
-      borderRadius: 24,
-      paddingLeft: paddings.left + 12,
-      paddingRight: paddings.right + 12,
+      paddingHorizontal:
+        Platform.OS === 'ios' ? paddings.left : paddings.left + 12,
       paddingVertical: 20,
-      gap: 18,
+      gap: GAP_SIZE,
     },
     item: {
-      width: 210,
-      height: 198,
+      width: ITEM_WIDTH,
+      height: ITEM_HEIGHT,
       borderRadius: 24,
       justifyContent: 'space-between',
       alignItems: 'center',
       backgroundColor: 'white',
-      gap: 12,
       shadowColor: '#E5E8FE',
       shadowOffset: { width: 0, height: 6 },
       shadowOpacity: 1,
       shadowRadius: 0,
       elevation: 6,
     },
-
     itemImage: {
       width: 144,
       height: 144,
@@ -178,8 +187,7 @@ const gesStyles = (paddings: EdgeInsets) =>
     text: {
       fontFamily: 'Nunito-ExtraBold',
       textAlign: 'center',
-      paddingHorizontal: 8,
-      paddingBottom: 8,
+      padding: 8,
     },
   });
 
